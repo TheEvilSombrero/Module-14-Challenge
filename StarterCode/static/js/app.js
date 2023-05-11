@@ -1,78 +1,24 @@
 // Define the URL for the JSON file
 var url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json';
 
-// Use D3 to fetch the JSON data
 d3.json(url).then(function(data) {
-  // Extract the necessary data from the JSON
-  var samples = data.samples;
-  var names = data.names;
+    console.log(data)
 
-  // Get the dropdown select element
-  var dropdown = d3.select('#dropdown');
+    // Array to hold all ID names
+    var names = data.samples.map(x => x.id)
 
-  // Populate the dropdown with sample names
-  dropdown
-    .selectAll('option')
-    .data(names)
-    .enter()
-    .append('option')
-    .text(function(d) {
-      return d;
+    // Options for dropdown menu 
+    names.forEach(function(name) {
+        d3.select('#selDataset')
+            .append('option')
+            .text(name)
     });
 
-  // Set the initial sample
-  var initialSample = samples[0];
+    // Creating arrays for sample_values, otu_ids, otu_labels
+    var sample_values = data.samples.map(x => x.sample_values)
+    var otu_ids = data.samples.map(x => x.otu_ids)
+    var otu_labels = data.samples.map(x => x.otu_labels)
 
-  // Create the bar chart
-  createBarChart(initialSample);
-
-  // Handle dropdown selection change
-  dropdown.on('change', function() {
-    // Get the selected sample value
-    var selectedSample = samples.find(function(sample) {
-      return sample.id === this.value;
-    }, this).sample_values;
-
-    // Update the bar chart with the selected sample
-    updateBarChart(selectedSample);
-  });
-
-  // Function to create the initial bar chart
-  function createBarChart(sample) {
-    var barData = [
-      {
-        y: sample.otu_ids.slice(0, 10).map(function(id) {
-          return `OTU ${id}`;
-        }),
-        x: sample.sample_values.slice(0, 10),
-        text: sample.otu_labels.slice(0, 10),
-        type: 'bar',
-        orientation: 'h'
-      }
-    ];
-
-    var layout = {
-      title: 'Top 10 OTUs',
-      xaxis: { title: 'Sample Values' },
-      yaxis: { title: 'OTU IDs' }
-    };
-
-    Plotly.newPlot('chart', barData, layout);
-  }
-
-  // Function to update the bar chart
-  function updateBarChart(sample) {
-    var update = {
-      x: [sample.slice(0, 10)],
-      y: [sample.otu_ids.slice(0, 10).map(function(id) {
-        return `OTU ${id}`;
-      })],
-      text: [sample.otu_labels.slice(0, 10)]
-    };
-
-    Plotly.update('chart', update);
-  }
-}).catch(function(error) {
-  // Handle any errors that occur during the request
-  console.error('Error loading the JSON file:', error);
+    // Sorting out top 10 OTUs
+    
 });
