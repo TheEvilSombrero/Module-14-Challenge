@@ -19,6 +19,18 @@ d3.json(url).then(function(data) {
     var otu_ids = data.samples.map(x => x.otu_ids)
     var otu_labels = data.samples.map(x => x.otu_labels)
 
-    // Sorting out top 10 OTUs
-    
+    // Sorting out top 10 OTUs in sample_values, otu_ids, otu_labels 
+    // Sample values
+    var sorted_sample_values = sample_values.sort(function(nOne, nTwo){return nTwo-nOne})
+    var top_ten_otu = sorted_sample_values.map(x => x.slice(0, 10))
+    // otu_ids
+    var sorted_ids = otu_ids.sort(function(nOne, nTwo){return nTwo-nOne})
+    var top_ids = sorted_ids.map(x => x.slice(0, 10))
+    // otu_labels
+    var sorted_labels = otu_labels.sort(function(nOne, nTwo){return nTwo-nOne})
+    var top_ten_labels = sorted_labels.map(x => x.slice(0, 10))
+
+    // First ID to display on page when it loads 
+    var firstID = data.metadata[0] 
+    var sampleMetadata1 = d3.select('#sample-metadata').selectAll('h1')
 });
