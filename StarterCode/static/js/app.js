@@ -27,9 +27,8 @@ function init() {
   // Get the first ID to display on page on load
   var firstID = data.metadata[0]// first id
   var sampleMetadata1 = d3.select("#sample-metadata").selectAll('h1')
-  
-  //-------------------------------------------------
-  // Display the first ID's demographic information
+ 
+  // Display the ID's demographic information
   var sampleMetadata = sampleMetadata1.data(d3.entries(firstID))
   sampleMetadata.enter()
                 .append('h1')
@@ -197,7 +196,6 @@ function init() {
     Plotly.newPlot('gauge', dataGauge,layoutGauge,config);
 });
 };
-
 
 // Update the plot 
 function updatePlotly(id) {
